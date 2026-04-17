@@ -9,7 +9,7 @@ import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class SimpleContract extends ActivityResultContract<String, String> {
+public class SimpleContract extends ActivityResultContract<String, Bitmap> {
 
     @NonNull
     @Override
@@ -20,10 +20,11 @@ public class SimpleContract extends ActivityResultContract<String, String> {
     }
 
     @Override
-    public String parseResult(int resultCode, @Nullable Intent intent) {
+    public Bitmap parseResult(int resultCode, @Nullable Intent intent) {
         if (resultCode != Activity.RESULT_OK || intent == null)
-            return "";
+            return null;
 
-        return intent.getStringExtra("resultado");
+        // Recupera a foto que foi colocada na Intent
+        return intent.getParcelableExtra("foto");
     }
 }

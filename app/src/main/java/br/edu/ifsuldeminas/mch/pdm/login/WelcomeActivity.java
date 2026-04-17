@@ -2,7 +2,6 @@ package br.edu.ifsuldeminas.mch.pdm.login;
 
 import android.app.Activity;
 import android.app.ComponentCaller;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -69,7 +68,6 @@ public class WelcomeActivity extends AppCompatActivity {
         setResult(Activity.RESULT_OK, resultIntent);
     }
 
-    // Dar suporte ao botão Up Navigation (<--)
     @Override
     public boolean onSupportNavigateUp() {
         finish();
@@ -77,10 +75,7 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode,
-                                 int resultCode,
-                                 @Nullable Intent data,
-                                 @NonNull ComponentCaller caller) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data, @NonNull ComponentCaller caller) {
         super.onActivityResult(requestCode, resultCode, data, caller);
 
         if (requestCode == REQUEST_PICTURE_CODE) {
@@ -92,6 +87,10 @@ public class WelcomeActivity extends AppCompatActivity {
                     imageViewPicture.setImageBitmap(image);
 
                     resultIntent.putExtra(RESULT_KEY, "Bateu a foto.");
+
+                    resultIntent.putExtra("foto", image);
+                    // Atualiza o resultado antes do usuário fechar a tela
+                    setResult(Activity.RESULT_OK, resultIntent);
                 }
             }
         }

@@ -1,11 +1,13 @@
 package br.edu.ifsuldeminas.mch.pdm.login;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -30,18 +32,21 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText editTextUser;
     private EditText editTextPW;
+    private ImageView imageViewUserPhoto;
 
     private ActivityResultLauncher<String> startWelcomeActLauncher =
             registerForActivityResult(new SimpleContract(),
-                    new ActivityResultCallback<String>() {
-                @Override
-                public void onActivityResult(String result) {
-                    if (result == null || result.isBlank())
-                        return;
-
-                    Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
-                }
-            });
+                    new ActivityResultCallback<Bitmap>() {
+                        @Override
+                        public void onActivityResult(Bitmap result) {
+                            if (result != null) {
+                                imageViewUserPhoto.setImageBitmap(result);
+                                imageViewUserPhoto.setVisibility(View.VISIBLE);
+                            } else {
+                                Toast.makeText(MainActivity.this, "Nenhuma foto retornada.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
         editTextUser = findViewById(R.id.textInputEditTextUserId);
         editTextPW = findViewById(R.id.textInputEditTextPwId);
 
-        // Classe anônima
+        // Inicializa o ImageView com a foto do usuário redonda
+        imageViewUserPhoto = findViewById(R.id.imageViewUserPhotoId);
+
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,10 +88,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Classe externa
         buttonRegister.setOnClickListener(new RegisterClickListener());
 
-        // Lambdas com interfaces SAM
         buttonForgotPW.setOnClickListener((View view) -> {
             Toast.makeText(
                     view.getContext(),
